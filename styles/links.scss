@@ -1,0 +1,119 @@
+.links {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-areas: "items edit"
+                         "create edit";
+    grid-template-columns: 1fr .7fr;
+    grid-template-rows: 1fr auto;
+    gap: 20px;
+    &__list {
+        grid-area: items;
+        overflow-y: auto;
+        div {
+            cursor: pointer;
+            color: var(--bg);
+            background: var(--bg-light);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 10px 25px;
+            margin-bottom: 10px;
+            will-change: border, transform, opacity, translate;
+            border-radius: 5px;
+            border: transparent 2px dashed;
+            animation: appearance .8s ease;
+            transition: all .3s ease;
+            &.active {
+                border: var(--bg) 2px dashed;
+            }
+        }
+    }
+    &__edit {
+        overflow-y: auto;
+        grid-area: edit;
+        background: var(--bg-light);
+        border-radius: 5px;
+        padding: 25px 50px;
+        color: var(--bg);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        &_form {
+            display: flex;
+            flex-direction: column;
+            h1 {
+                text-align: center;
+            }
+            input[type="file"] {
+                display: none;
+            }
+            input {
+                font-weight: 600;
+                padding: 0;
+                padding-bottom: 3px;
+                background: none;
+                border: none;
+                border-bottom: 2px dashed var(--bg-80);
+                border-radius: 0;
+            }
+            ul {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-around;
+                margin-top: 10px;
+                overflow-y: auto;
+                height: 150px;
+                margin-bottom: 10px;
+                li {
+                    padding: 5px 10px;
+                }
+            }
+            label {
+                cursor: pointer;
+            }
+        }
+    }
+    &__create {
+        grid-area: create;
+        width: 100%;
+        display: flex;
+        gap: 10px;
+        input {
+            width: 100%;
+        }
+        button {
+            color: var(--bg);
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 5px;
+            border: var(--bg) 2px solid;
+            background-color: var(--bg-light);
+            padding: 5px 15px;
+            cursor: pointer;
+        }
+    }
+}
+
+@keyframes appearance {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media(max-width: 720px) {
+    .links {
+        grid-template-areas: "edit"
+                             "items"
+                             "create";
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr .5fr auto;
+        &__list {
+            grid-row: 2;
+        }
+    }
+}

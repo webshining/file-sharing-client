@@ -1,12 +1,14 @@
-import { useAppSelector } from "@/hooks/redux";
-import Notification from "./Notification";
+"use client";
+
+import { useAppSelector } from "@/actions/hooks/redux";
+import NotificationItem from "./NotificationItem";
 
 const Notifications = () => {
 	const { notifications } = useAppSelector((state) => state.notifications);
 	return (
 		<div className="notifications">
-			{notifications.map((notification) => (
-				<Notification key={notification.id} {...notification} />
+			{notifications.map((n) => (
+				<NotificationItem key={n.id} {...n} />
 			))}
 		</div>
 	);
