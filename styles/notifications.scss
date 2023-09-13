@@ -1,5 +1,54 @@
 .notifications {
     position: absolute;
-    top: 10px;
+    width: 205px;
+    top: 50px;
     right: 10px;
+    text-align: right;
+    &__item {
+      filter: blur(.0px);
+      will-change: transform, opacity, translate;
+      position: relative;
+      pointer-events: auto;
+      margin: 10px;
+      animation: notificationToLeft .8s ease;
+      font-size: 20px;
+    }
+    &__item.exit {
+      animation: notificationToRight .8s ease;
+    }
+}
+
+@keyframes notificationToLeft {
+  0% {
+    transform: translateX(150%);
+    opacity: 0;
+  }
+  50% {
+    transform: translateX(-30%);
+    opacity: 1;
+  }
+  70% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes notificationToRight {
+  0% {
+    left: 0;
+  }
+  50% {
+    left: -30%;
+    opacity: 1;
+  }
+  70% {
+    left: 150%;
+    opacity: 0;
+  }
+  100% {
+    left: 150%;
+    opacity: 0;
+  }
 }
