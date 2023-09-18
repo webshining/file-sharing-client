@@ -12,7 +12,7 @@ const AuthContent = () => {
 	const { push } = useRouter();
 	const { setUser, loginUser, registerUser, addNotification } = useActions();
 	const [isLogin, setIsLogin] = useState<boolean>(true);
-	const { error, user } = useAppSelector((state) => state.user);
+	const { user } = useAppSelector((state) => state.user);
 	useEffect(() => {
 		if (window.location.hash) {
 			const data = JSON.parse(decodeURI(window.location.hash).slice(1));
@@ -20,13 +20,13 @@ const AuthContent = () => {
 			if (!data.error) setUser(getUser(data.accessToken));
 			push("/");
 		}
-	}, [error]);
+	}, []);
 	useEffect(() => {
 		if (user) push("/");
 	}, [user]);
 	const onChange = (e: any) => {
-		setValue(() => ({
-			...values,
+		setValue((prev) => ({
+			...prev,
 			[e.target.name]: e.target.value,
 		}));
 	};

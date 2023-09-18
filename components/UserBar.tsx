@@ -1,12 +1,15 @@
 "use client";
 
 import { useActions, useAppSelector } from "@/actions/hooks/redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const UserBar = () => {
 	const [isActive, setIsActive] = useState<boolean>(false);
 	const { user } = useAppSelector((state) => state.user);
 	const { logoutUser } = useActions();
+	useEffect(() => {
+		setIsActive(false);
+	}, [user]);
 	return (
 		<div className="userbar">
 			{user && (

@@ -4,7 +4,7 @@ import { useActions } from "@/actions/hooks/redux";
 import { Notification } from "@/types/notification";
 import { useEffect, useState } from "react";
 
-const NotificationItem = (props: Notification) => {
+const NotificationsItem = (props: Notification) => {
 	const [exit, setExit] = useState<boolean>(false);
 	const { removeNotification } = useActions();
 	useEffect(() => {
@@ -18,4 +18,4 @@ const NotificationItem = (props: Notification) => {
 	return <div className={`notifications__item ${exit ? "exit" : ""}`}>{props.text}</div>;
 };
 
-export default NotificationItem;
+export default NotificationsItem;

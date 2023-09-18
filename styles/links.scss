@@ -7,10 +7,10 @@
     grid-template-columns: 1fr .7fr;
     grid-template-rows: 1fr auto;
     gap: 20px;
-    &__list {
+    &__items {
         grid-area: items;
         overflow-y: auto;
-        div {
+        &_item {
             cursor: pointer;
             color: var(--bg);
             background: var(--bg-light);
@@ -26,6 +26,25 @@
             &.active {
                 border: var(--bg) 2px dashed;
             }
+        }
+    }
+    &__create {
+        grid-area: create;
+        width: 100%;
+        display: flex;
+        gap: 10px;
+        input {
+            width: 100%;
+        }
+        button {
+            color: var(--bg);
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 5px;
+            border: var(--bg) 2px solid;
+            background-color: var(--bg-light);
+            padding: 5px 15px;
+            cursor: pointer;
         }
     }
     &__edit {
@@ -71,25 +90,6 @@
             label {
                 cursor: pointer;
             }
-        }
-    }
-    &__create {
-        grid-area: create;
-        width: 100%;
-        display: flex;
-        gap: 10px;
-        input {
-            width: 100%;
-        }
-        button {
-            color: var(--bg);
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 5px;
-            border: var(--bg) 2px solid;
-            background-color: var(--bg-light);
-            padding: 5px 15px;
-            cursor: pointer;
         }
     }
 }
