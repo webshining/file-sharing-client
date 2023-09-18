@@ -5,10 +5,8 @@
     right: 10px;
     text-align: right;
     &__item {
-      filter: blur(.0px);
-      will-change: transform, opacity, translate;
+      will-change: transform, opacity, translate, animation;
       position: relative;
-      pointer-events: auto;
       margin: 10px;
       animation: notificationToLeft .8s ease;
       font-size: 20px;

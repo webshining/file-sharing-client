@@ -8,19 +8,30 @@ const LinksContent = () => {
 	const { data } = useGetLinksQuery();
 	const [active, setActive] = useState<Link | null>(null);
 	useEffect(() => {
-		// if (!active && data?.links[0]) {
-		// 	setActive(data.links[0]);
-		// } else if (active && data?.links[0] && !data.links.filter((l) => l.id === active.id)[0]) {
-		// 	setActive(data.links[0]);
-		// }
-		console.log(!active, active && data?.links.filter((l) => l.id === active!.id)[0]);
+		if (data?.links) {
+			const links = [...data.links].sort((a, b) => a.id - b.id);
+			if (active) {
+				const link = links.find((l) => l.id == active.id);
+				if (!link) {
+					setActive(links[0]);
+				} else {
+					setActive(link);
+				}
+			} else {
+				setActive(links[0]);
+			}
+		} else setActive(null);
 	}, [data]);
 	return (
 		<div className="links">
-			<div className="links__list">
+			<div className="links__items">
 				{data?.links &&
 					data.links.map((l) => (
-						<div key={l.id} className={active == l ? "active" : ""} onClick={() => setActive(l)}>
+						<div
+							key={l.id}
+							className={"links__items_item" + (active == l ? " active" : "")}
+							onClick={() => setActive(l)}
+						>
 							{l.href}
 						</div>
 					))}

@@ -11,7 +11,7 @@ const Home = () => {
 	const { user, isLoading } = useAppSelector((state) => state.user);
 	useEffect(() => {
 		if (!isLoading && !user) push("/auth");
-	}, [user, isLoading]);
+	}, [isLoading]);
 	return isLoading ? <></> : user ? <LinksContent /> : <AuthContent />;
 };
 

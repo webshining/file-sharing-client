@@ -23,12 +23,17 @@
 
 body {
     width: 100vw;
-    height: 100vh;
-    background: url('/login_page.png');
+    height: 100dvh;
+    background: url('/background.png');
     background-position: bottom;
     background-repeat: no-repeat;
     background-size: cover;
     overflow: hidden
+}
+
+.content {
+    height: 100%;
+    padding: 50px;
 }
 
 a {
@@ -50,11 +55,6 @@ input {
     &:focus {
         outline: none;
     }
-}
-
-.content {
-    height: 100%;
-    padding: 50px;
 }
 
 @import './auth.scss';

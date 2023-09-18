@@ -22,36 +22,24 @@ const LinksEditContent = (link: Link) => {
 	};
 	const changeFilesHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		setAddedFiles([...addedFiles, ...(e.target.files as any)]);
-		e.target.value = "";
 	};
 	const removeAdded = (file: File) => {
 		setAddedFiles(addedFiles.filter((f) => f !== file));
 	};
-	const setDeleted = (e: any, id: number) => {
-		if (e.target.classList.contains("deleted")) setDeletedFiles(deletedFiles.filter((f) => f !== id));
-		else setDeletedFiles([...deletedFiles, id]);
-		e.target.classList.toggle("deleted");
-	};
+	const setDeleted = (e: any, id: number) => {};
 	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		if (link.href !== href) {
 			const { data } = (await updateLink({ id: link.id, data: { href } })) as any;
 			if (data.error) addNotification({ text: data.error, type: "ERROR" });
 		}
-		if (addedFiles[0]) {
-			const formdata = new FormData();
-			addedFiles.forEach((f, i) => formdata.append(String(i), f));
-			addFiles({ id: link.id, data: formdata });
+		if (addedFiles) {
+			addFiles({ id: link.id, data: addedFiles });
 		}
-		if (deletedFiles[0]) {
-			deleteFiles({ id: link.id, data: { files: deletedFiles } });
-		}
-		setAddedFiles([]);
-		setDeletedFiles([]);
 	};
 	useEffect(() => {
 		setHref(link.href);
-	}, [link]);
+	}, [link.href]);
 	return (
 		<form className="links__edit" onSubmit={onSubmit}>
 			<h1>Edit</h1>
