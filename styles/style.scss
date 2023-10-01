@@ -28,7 +28,6 @@ body {
     background-position: bottom;
     background-repeat: no-repeat;
     background-size: cover;
-    overflow: hidden
 }
 
 .content {
@@ -62,6 +61,7 @@ input {
 @import './userbar.scss';
 @import './links.scss';
 @import './link.scss';
+@import './confirm.scss';
 
 @media (max-width: 490px) {
     .content {

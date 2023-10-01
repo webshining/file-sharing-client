@@ -4,31 +4,36 @@ import { useActions, useAppSelector } from "@/actions/hooks/redux";
 import { getUser } from "@/storage/reducers/user";
 import { UserBody } from "@/types/user";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { default as usePush } from "./Push";
 
 const AuthContent = () => {
-	const { push } = useRouter();
-	const { setUser, loginUser, registerUser, addNotification } = useActions();
+	const push = usePush();
+	const { setUser, loginUser, registerUser, addNotification, removeNotifications } = useActions();
+	const { user } = useAppSelector((state) => state.user);
+	const [values, setValue] = useState<UserBody>({ name: "", email: "", password: "" });
+	const authRef = useRef(null);
+
 	useEffect(() => {
 		if (window.location.hash) {
 			const data = JSON.parse(decodeURI(window.location.hash).slice(1));
 			if (!data.error) {
 				localStorage.setItem("accessToken", data.accessToken);
 				setUser(getUser(data.accessToken));
-				push("/");
+				removeNotifications();
+				push("/", authRef.current, 800);
 			} else {
 				addNotification({ text: data.error, type: "ERROR" });
 			}
 		}
 	}, []);
-
-	const { user } = useAppSelector((state) => state.user);
 	useEffect(() => {
-		if (user) push("/");
+		if (user) {
+			removeNotifications();
+			push("/", authRef.current, 800);
+		}
 	}, [user]);
 
-	const [values, setValue] = useState<UserBody>({ name: "", email: "", password: "" });
 	const onChange = (e: any) => {
 		setValue((prev) => ({
 			...prev,
@@ -44,13 +49,13 @@ const AuthContent = () => {
 	};
 
 	const redirectGoogle = () => {
-		push(`${process.env.API_URL}/auth/google?state=` + window.location.href);
+		push(`${process.env.API_URL}/auth/google?state=` + window.location.href, authRef.current, 800);
 	};
 	const redirectGithub = () => {
-		push(`${process.env.API_URL}/auth/github?state=` + window.location.href);
+		push(`${process.env.API_URL}/auth/github?state=` + window.location.href, authRef.current, 800);
 	};
 	return (
-		<div className="auth">
+		<div className="auth" ref={authRef}>
 			<form className="auth__form" onSubmit={onSubmit}>
 				<h1>{isLogin ? "Sign In" : "Sign Up"}</h1>
 				<span onClick={(e) => setIsLogin(!isLogin)}>{isLogin ? "Sign Up" : "Sign In"}</span>

@@ -7,8 +7,11 @@ const LinksContent = () => {
 	const { user } = useAppSelector((state) => state.user);
 	const { data, refetch } = useGetLinksQuery();
 	const [deleteLink] = useDeleteLinkMutation();
-	const deleteHandler = (id: number) => {
-		deleteLink({ id: id });
+	const deleteHandler = (e: any, id: number) => {
+		e.target.parentElement.parentElement.classList.add("disappearance");
+		setTimeout(() => {
+			deleteLink({ id: id });
+		}, 800);
 	};
 	const copyToClipboard = (text: string) => {
 		navigator.clipboard.writeText(`${window.location.host}/${text}`);
@@ -29,7 +32,7 @@ const LinksContent = () => {
 										content_copy
 									</span>
 									<span className="material-symbols-outlined">edit</span>
-									<span className="material-symbols-outlined" onClick={() => deleteHandler(l.id)}>
+									<span className="material-symbols-outlined" onClick={(e) => deleteHandler(e, l.id)}>
 										delete
 									</span>
 								</div>

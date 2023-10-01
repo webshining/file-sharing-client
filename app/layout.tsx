@@ -1,6 +1,5 @@
 import Notifications from "@/components/Notifications";
 import Providers from "@/components/Providers";
-import UserBar from "@/components/UserBar";
 import "@/styles/style.scss";
 import type { Metadata } from "next";
 
@@ -21,7 +20,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				</head>
 				<body>
 					<Notifications />
-					<UserBar />
 					<div className="content">{children}</div>
 				</body>
 			</html>

@@ -1,7 +1,11 @@
 .links {
     position: relative;
     height: 100%;
-    overflow: auto;
+    will-change: transform, opacity;
+    animation: .8s ease appearanceLinks;
+    &.disappearance {
+        animation: .8s ease disappearanceLinks forwards;
+    }
     &__content {
         width: 100%;
         height: 100%;
@@ -25,13 +29,13 @@
             border: 2px dashed transparent;
             transition: all .3s ease;
             will-change: border, transform, opacity;
-            animation: .8s ease appearance;
-            &.active {
-                border: 2px dashed var(--bg);
-            }
+            animation: .8s ease appearanceLinks;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            &.disappearance {
+                animation: .8s ease disappearanceLinks forwards;
+            }
             span {
                 align-self: center;
                 align-content: center;
@@ -71,7 +75,18 @@
     }
 }
 
-@keyframes appearance {
+@keyframes disappearanceLinks {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+}
+
+@keyframes appearanceLinks {
     0% {
         opacity: 0;
         transform: translateY(30px);
