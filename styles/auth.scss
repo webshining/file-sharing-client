@@ -5,6 +5,10 @@
     justify-content: center;
     align-items: center;
     color: var(--bg);
+    animation: .8s ease appearanceAuth forwards;
+    &.disappearance {
+        animation: .8s ease disappearanceAuth forwards;
+    }
     span {
         margin-bottom: 15px;
         color: var(--bg-50);
@@ -35,5 +39,27 @@
     &__social img {
         cursor: pointer;
         margin: 10px;
+    }
+}
+
+@keyframes appearanceAuth {
+    0% {
+        opacity: 0;
+        scale: .8;
+    }
+    100% {
+        opacity: 1;
+        scale: 1;
+    }
+}
+
+@keyframes disappearanceAuth {
+    0% {
+        opacity: 1;
+        scale: 1;
+    }
+    80%,100% {
+        opacity: 0;
+        scale: .8;
     }
 }

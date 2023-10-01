@@ -1,35 +1,59 @@
 .userbar {
     position: absolute;
-    right: 20px;
-    top: 20px;
-    color: var(--bg);
-    z-index: 10000;
-    &__name {
-        font-size: 18px;
+    right: 10px;
+    top: 15px;
+    will-change: transform, opacity, translate, animation;
+    animation: .8s ease appearanceUserbar;
+    &__name, &__menu {
+        transition: all .3s ease;
         font-weight: 600;
+        font-size: 18px;
+        color: var(--bg);
+    }
+    &__name, &__menu > li {
         cursor: pointer;
-        z-index: 100000;
     }
     &__menu {
-        z-index: 99999;
-        top: 100%;
-        color: #ffffff;
-        left: 50%;
-        transform: translateX(-50%);
         position: absolute;
-        transition: all .3s ease;
+        top: 0;
+        right: 0;
         opacity: 0;
         pointer-events: none;
-        border-radius: 12px;
-        background-color: var(--bg);
-        padding: 5px 25px;
-        &.active {
-            pointer-events: auto;
+    }
+    &.disappearance {
+        animation: .8s ease disappearanceUserbar forwards;
+    }
+    &.active {
+        .userbar__menu {
             opacity: 1;
-            top: calc(100% + 10px);
+            pointer-events: auto;
         }
-        &_item {
-            cursor: pointer;
+        .userbar__name {
+            opacity: 0;
+            pointer-events: none;
         }
+    }
+}
+
+
+@keyframes disappearanceUserbar {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+}
+
+@keyframes appearanceUserbar {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
     }
 }

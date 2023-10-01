@@ -19,6 +19,9 @@ const notificationsSlice = createSlice({
 		removeNotification: (state: NotificationsState, action: PayloadAction<{ id: string }>) => {
 			state.notifications = state.notifications.filter((n) => n.id !== action.payload.id);
 		},
+		removeNotifications: (state: NotificationsState) => {
+			state.notifications = [];
+		},
 	},
 });
 
