@@ -1,11 +1,5 @@
 import axios from "axios";
-import jwt from "jsonwebtoken";
-
-const isTokenExpired = (token: string) => {
-	const decode: any = jwt.decode(token);
-	const dateNow = new Date();
-	return decode.exp * 1000 < dateNow.getTime();
-};
+import { isExpired } from "react-jwt";
 
 const host = axios.create({
 	baseURL: process.env.API_URL,
@@ -19,7 +13,7 @@ const authHost = axios.create({
 
 authHost.interceptors.request.use(async (config) => {
 	let accessToken = typeof window !== "undefined" && localStorage.getItem("accessToken");
-	if (!accessToken || isTokenExpired(accessToken)) {
+	if (!accessToken || isExpired(accessToken)) {
 		const { data } = await host.get("/auth/refresh");
 		if (data.accessToken) {
 			accessToken = data.accessToken;
@@ -32,4 +26,4 @@ authHost.interceptors.request.use(async (config) => {
 	return config;
 });
 
-export { authHost, host, isTokenExpired };
+export { authHost, host };

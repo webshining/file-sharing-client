@@ -1,7 +1,6 @@
 import { FilesAdd, FilesDelete } from "@/types/files";
-import { LinkCreate, LinkDelete, LinksState } from "@/types/links";
+import { LinkCreate, LinkDelete, LinkUpdate, LinksState } from "@/types/links";
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { LinkUpdate } from "./../../types/links";
 import { axiosBaseQuery } from "./base";
 
 export const linksApi = createApi({

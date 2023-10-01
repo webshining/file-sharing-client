@@ -6,10 +6,15 @@ import { useEffect, useState } from "react";
 const UserBar = () => {
 	const [isActive, setIsActive] = useState<boolean>(false);
 	const { user } = useAppSelector((state) => state.user);
-	const { logoutUser } = useActions();
+	const { logoutUser, setUser } = useActions();
 	useEffect(() => {
 		setIsActive(false);
 	}, [user]);
+	const logout = () => {
+		setUser(null);
+		localStorage.removeItem("accessToken");
+		logoutUser();
+	};
 	return (
 		<div className="userbar">
 			{user && (
@@ -18,7 +23,7 @@ const UserBar = () => {
 						{user.name}
 					</div>
 					<ul className={`userbar__menu${isActive ? " active" : ""}`}>
-						<li className="userbar__menu_item" onClick={logoutUser}>
+						<li className="userbar__menu_item" onClick={logout}>
 							Logout
 						</li>
 					</ul>

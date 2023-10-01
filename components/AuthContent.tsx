@@ -8,33 +8,41 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const AuthContent = () => {
-	const [values, setValue] = useState<UserBody>({ name: "", email: "", password: "" });
 	const { push } = useRouter();
 	const { setUser, loginUser, registerUser, addNotification } = useActions();
-	const [isLogin, setIsLogin] = useState<boolean>(true);
-	const { user } = useAppSelector((state) => state.user);
 	useEffect(() => {
 		if (window.location.hash) {
 			const data = JSON.parse(decodeURI(window.location.hash).slice(1));
-			localStorage.setItem("accessToken", data.accessToken);
-			if (!data.error) setUser(getUser(data.accessToken));
-			push("/");
+			if (!data.error) {
+				localStorage.setItem("accessToken", data.accessToken);
+				setUser(getUser(data.accessToken));
+				push("/");
+			} else {
+				addNotification({ text: data.error, type: "ERROR" });
+			}
 		}
 	}, []);
+
+	const { user } = useAppSelector((state) => state.user);
 	useEffect(() => {
 		if (user) push("/");
 	}, [user]);
+
+	const [values, setValue] = useState<UserBody>({ name: "", email: "", password: "" });
 	const onChange = (e: any) => {
 		setValue((prev) => ({
 			...prev,
 			[e.target.name]: e.target.value,
 		}));
 	};
+
+	const [isLogin, setIsLogin] = useState<boolean>(true);
 	const onSubmit = async (e: any) => {
 		e.preventDefault();
 		const { payload } = (await (isLogin ? loginUser(values) : registerUser(values))) as any;
 		if (payload.error) addNotification({ text: payload.error, type: "ERROR" });
 	};
+
 	const redirectGoogle = () => {
 		push(`${process.env.API_URL}/auth/google?state=` + window.location.href);
 	};

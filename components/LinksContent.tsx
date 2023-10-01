@@ -1,43 +1,43 @@
-import { useGetLinksQuery } from "@/storage/reducers/links";
-import { Link } from "@/types/links";
-import { useEffect, useState } from "react";
+import { useAppSelector } from "@/actions/hooks/redux";
+import { useDeleteLinkMutation, useGetLinksQuery } from "@/storage/reducers/links";
+import { useEffect } from "react";
 import LinksCreateContent from "./LinksCreateContent";
-import LinksEditContent from "./LinksEditContent";
 
 const LinksContent = () => {
-	const { data } = useGetLinksQuery();
-	const [active, setActive] = useState<Link | null>(null);
+	const { user } = useAppSelector((state) => state.user);
+	const { data, refetch } = useGetLinksQuery();
+	const [deleteLink] = useDeleteLinkMutation();
+	const deleteHandler = (id: number) => {
+		deleteLink({ id: id });
+	};
+	const copyToClipboard = (text: string) => {
+		navigator.clipboard.writeText(`${window.location.host}/${text}`);
+	};
 	useEffect(() => {
-		if (data?.links) {
-			const links = [...data.links].sort((a, b) => a.id - b.id);
-			if (active) {
-				const link = links.find((l) => l.id == active.id);
-				if (!link) {
-					setActive(links[0]);
-				} else {
-					setActive(link);
-				}
-			} else {
-				setActive(links[0]);
-			}
-		} else setActive(null);
-	}, [data]);
+		refetch();
+	}, [user]);
 	return (
 		<div className="links">
-			<div className="links__items">
-				{data?.links &&
-					data.links.map((l) => (
-						<div
-							key={l.id}
-							className={"links__items_item" + (active == l ? " active" : "")}
-							onClick={() => setActive(l)}
-						>
-							{l.href}
-						</div>
-					))}
+			<div className="links__content">
+				<div className="links__items">
+					{data?.links &&
+						data.links.map((l) => (
+							<div key={l.id} className="links__items_item">
+								{l.href}
+								<div className="links__items_item-buttons">
+									<span className="material-symbols-outlined" onClick={() => copyToClipboard(l.href)}>
+										content_copy
+									</span>
+									<span className="material-symbols-outlined">edit</span>
+									<span className="material-symbols-outlined" onClick={() => deleteHandler(l.id)}>
+										delete
+									</span>
+								</div>
+							</div>
+						))}
+				</div>
+				<LinksCreateContent />
 			</div>
-			<LinksCreateContent />
-			{active && <LinksEditContent {...active} />}
 		</div>
 	);
 };

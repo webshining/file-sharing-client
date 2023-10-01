@@ -3,6 +3,7 @@
     right: 20px;
     top: 20px;
     color: var(--bg);
+    z-index: 10000;
     &__name {
         font-size: 18px;
         font-weight: 600;
