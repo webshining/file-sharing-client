@@ -1,7 +1,7 @@
 import { host } from "@/actions/fetch";
 import { User, UserBody, UserPayload, UserState } from "@/types/user";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import jwt from "jsonwebtoken";
+import { decodeToken } from "react-jwt";
 
 const defaultState: UserState = {
 	user: null,
@@ -10,7 +10,7 @@ const defaultState: UserState = {
 };
 
 export const getUser = (accessToken: string): User => {
-	const decode: any = jwt.decode(accessToken);
+	const decode: any = decodeToken(accessToken);
 	return decode.user as User;
 };
 
@@ -87,7 +87,6 @@ export const userSlice = createSlice({
 				state.isLoading = true;
 			})
 			.addCase(logoutUser.fulfilled, (state: UserState, action: PayloadAction<UserPayload>) => {
-				console.log(action.payload);
 				state.isLoading = false;
 				state.user = action.payload.user;
 				state.error = action.payload.error;

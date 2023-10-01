@@ -1,7 +1,6 @@
 "use client";
 
 import { useAppSelector } from "@/actions/hooks/redux";
-import AuthContent from "@/components/AuthCotent";
 import LinksContent from "@/components/LinksContent";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -11,8 +10,8 @@ const Home = () => {
 	const { user, isLoading } = useAppSelector((state) => state.user);
 	useEffect(() => {
 		if (!isLoading && !user) push("/auth");
-	}, [isLoading]);
-	return isLoading ? <></> : user ? <LinksContent /> : <AuthContent />;
+	}, [isLoading, user]);
+	return isLoading ? <></> : user && <LinksContent />;
 };
 
 export default Home;

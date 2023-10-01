@@ -62,3 +62,9 @@ input {
 @import './userbar.scss';
 @import './links.scss';
 @import './link.scss';
+
+@media (max-width: 490px) {
+    .content {
+        padding: 50px 25px 25px;
+    }
+}

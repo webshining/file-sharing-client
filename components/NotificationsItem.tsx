@@ -13,7 +13,7 @@ const NotificationsItem = (props: Notification) => {
 		}, 5000);
 		setTimeout(() => {
 			removeNotification({ id: props.id });
-		}, 5800);
+		}, 5790);
 	}, []);
 	return <div className={`notifications__item ${exit ? "exit" : ""}`}>{props.text}</div>;
 };

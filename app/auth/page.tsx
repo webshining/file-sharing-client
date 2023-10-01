@@ -1,6 +1,6 @@
 "use client";
 
-import AuthContent from "@/components/AuthCotent";
+import AuthContent from "@/components/AuthContent";
 
 const Auth = () => {
 	return <AuthContent />;
