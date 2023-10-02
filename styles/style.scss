@@ -1,5 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 
 :root {
     --bg: rgba(82, 72, 56);
@@ -24,10 +25,12 @@
 body {
     width: 100vw;
     height: 100dvh;
+    background-color: #f6efdf;
     background: url('/background.png');
     background-position: bottom;
     background-repeat: no-repeat;
     background-size: cover;
+    background-color: #f6efdf;
 }
 
 .content {
