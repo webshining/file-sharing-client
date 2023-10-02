@@ -1,6 +1,8 @@
 "use client";
 
 import { useActions, useAppSelector } from "@/actions/hooks/redux";
+import githubImg from "@/assets/github.png";
+import googleImg from "@/assets/google.png";
 import { getUser } from "@/storage/reducers/user";
 import { UserBody } from "@/types/user";
 import Image from "next/image";
@@ -58,7 +60,7 @@ const AuthContent = () => {
 		<div className="auth" ref={authRef}>
 			<form className="auth__form" onSubmit={onSubmit}>
 				<h1>{isLogin ? "Sign In" : "Sign Up"}</h1>
-				<span onClick={(e) => setIsLogin(!isLogin)}>{isLogin ? "Sign Up" : "Sign In"}</span>
+				<span onClick={() => setIsLogin(!isLogin)}>{isLogin ? "Sign Up" : "Sign In"}</span>
 				{!isLogin && (
 					<input
 						value={values.name}
@@ -92,8 +94,8 @@ const AuthContent = () => {
 					Submit
 				</button>
 				<div className="auth__social">
-					<Image src="/google.png" onClick={redirectGoogle} width={30} height={30} alt="google" />
-					<Image src="/github.png" onClick={redirectGithub} width={30} height={30} alt="github" />
+					<Image src={googleImg} alt="google" onClick={redirectGoogle} width={30} height={30} priority />
+					<Image src={githubImg} alt="github" onClick={redirectGithub} width={30} height={30} priority />
 				</div>
 			</form>
 		</div>
