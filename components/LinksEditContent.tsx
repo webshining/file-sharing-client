@@ -1,9 +1,8 @@
 import { useActions } from "@/actions/hooks/redux";
 import { useAddFilesMutation, useDeleteFilesMutation, useUpdateLinkMutation } from "@/storage/reducers/links";
-import { Link } from "@/types/links";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
-const LinksEditContent = (props: Link) => {
+const LinksEditContent = (props: any) => {
 	const [href, setHref] = useState<string>(props.href);
 	const { addNotification } = useActions();
 	const [updateLink] = useUpdateLinkMutation();
@@ -44,7 +43,7 @@ const LinksEditContent = (props: Link) => {
 					</button>
 				</div>
 				<ul>
-					{props.files.map((f, i) => (
+					{props.files.map((f: any, i: number) => (
 						<li key={i} onClick={() => deleteFiles({ id: props.id, data: { files: [f.id] } })}>
 							{f.name}
 						</li>
