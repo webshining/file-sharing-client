@@ -5,7 +5,7 @@ import { axiosBaseQuery } from "./base";
 
 export const linksApi = createApi({
 	reducerPath: "linksApi",
-	baseQuery: axiosBaseQuery(),
+	baseQuery: axiosBaseQuery,
 	tagTypes: ["Links"],
 	endpoints: (build) => ({
 		getLinks: build.query<LinksState, void>({

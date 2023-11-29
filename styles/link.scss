@@ -1,13 +1,17 @@
 .link {
-    overflow-y: auto;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
     &__href {
         color: var(--bg-50);
         margin-bottom: 20px;
     }
     &__items {
+        height: calc(100% - 50px);
         display: flex;
         flex-direction: column;
         gap: 10px;
+        overflow: auto;
         a {
             color: var(--bg);
             font-weight: 600;

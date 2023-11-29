@@ -1,9 +1,12 @@
 import { useAppSelector } from "@/actions/hooks/redux";
 import { useDeleteLinkMutation, useGetLinksQuery } from "@/storage/reducers/links";
-import { useEffect } from "react";
+import { Link } from "@/types/links";
+import { useEffect, useState } from "react";
 import LinksCreateContent from "./LinksCreateContent";
+import LinksEditContent from "./LinksEditContent";
 
 const LinksContent = () => {
+	const [active, setActive] = useState<Link | null>(null);
 	const { user } = useAppSelector((state) => state.user);
 	const { data, refetch } = useGetLinksQuery();
 	const [deleteLink] = useDeleteLinkMutation();
@@ -19,6 +22,12 @@ const LinksContent = () => {
 	useEffect(() => {
 		refetch();
 	}, [user]);
+	useEffect(() => {
+		if (active) {
+			const links = data?.links.filter((l) => l.id === active.id);
+			if (links) setActive(links[0]);
+		}
+	}, [data]);
 	return (
 		<div className="links">
 			<div className="links__content">
@@ -31,7 +40,9 @@ const LinksContent = () => {
 									<span className="material-symbols-outlined" onClick={() => copyToClipboard(l.href)}>
 										content_copy
 									</span>
-									<span className="material-symbols-outlined">edit</span>
+									<span className="material-symbols-outlined" onClick={() => setActive(l)}>
+										edit
+									</span>
 									<span className="material-symbols-outlined" onClick={(e) => deleteHandler(e, l.id)}>
 										delete
 									</span>
@@ -39,6 +50,7 @@ const LinksContent = () => {
 							</div>
 						))}
 				</div>
+				{active && <LinksEditContent {...active} onClose={() => setActive(null)} />}
 				<LinksCreateContent />
 			</div>
 		</div>
