@@ -10,5 +10,5 @@ export interface FilesDelete {
 
 export interface FilesAdd {
 	id: number;
-	data: any;
+	data: FormData;
 }
