@@ -1,9 +1,13 @@
-"use client";
+import AuthContent from '@/components/AuthContent'
 
-import AuthContent from "@/components/AuthContent";
+export function generateMetadata() {
+	return {
+		title: 'Auth'
+	}
+}
 
 const Auth = () => {
-	return <AuthContent />;
-};
+	return <AuthContent />
+}
 
-export default Auth;
+export default Auth

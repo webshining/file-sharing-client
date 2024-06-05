@@ -1,105 +1,84 @@
-"use client";
+'use client'
 
-import { useActions, useAppSelector } from "@/actions/hooks/redux";
-import githubImg from "@/assets/github.png";
-import googleImg from "@/assets/google.png";
-import { getUser } from "@/storage/reducers/user";
-import { UserBody } from "@/types/user";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import { default as usePush } from "./Push";
+import githubImg from '@/assets/github.png'
+import googleImg from '@/assets/google.png'
+import { authService } from '@/services'
+import { Input } from '@/styles/styles'
+import { AuthBody } from '@/types/user.types'
+import { useMutation } from '@tanstack/react-query'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 const AuthContent = () => {
-	const push = usePush();
-	const { setUser, loginUser, registerUser, addNotification, removeNotifications } = useActions();
-	const { user } = useAppSelector((state) => state.user);
-	const [values, setValue] = useState<UserBody>({ name: "", email: "", password: "" });
-	const authRef = useRef(null);
-
-	useEffect(() => {
-		if (window.location.hash) {
-			const data = JSON.parse(decodeURI(window.location.hash).slice(1));
-			if (!data.error) {
-				localStorage.setItem("accessToken", data.accessToken);
-				setUser(getUser(data.accessToken));
-				removeNotifications();
-				push("/", authRef.current, 800);
-			} else {
-				addNotification({ text: data.error, type: "ERROR" });
-			}
+	const { handleSubmit, register } = useForm<AuthBody>({ mode: 'onChange' })
+	const [isLogin, setIsLogin] = useState<boolean>(true)
+	const { push } = useRouter()
+	const { mutate } = useMutation({
+		mutationKey: ['auth'],
+		mutationFn: (data: AuthBody) => authService.main(isLogin ? 'login' : 'register', data),
+		onSuccess: () => {
+			push('/')
 		}
-	}, []);
-	useEffect(() => {
-		if (user) {
-			removeNotifications();
-			push("/", authRef.current, 800);
-		}
-	}, [user]);
+	})
 
-	const onChange = (e: any) => {
-		setValue((prev) => ({
-			...prev,
-			[e.target.name]: e.target.value,
-		}));
-	};
+	const onSubmit: SubmitHandler<AuthBody> = data => {
+		mutate(data)
+	}
+	const redirectOauth = (type: 'google' | 'github') => {
+		push(`${process.env.API_URL}/auth/${type}?state=` + window.location.href)
+	}
 
-	const [isLogin, setIsLogin] = useState<boolean>(true);
-	const onSubmit = async (e: any) => {
-		e.preventDefault();
-		const { payload } = (await (isLogin ? loginUser(values) : registerUser(values))) as any;
-		if (payload.error) addNotification({ text: payload.error, type: "ERROR" });
-	};
-
-	const redirectGoogle = () => {
-		push(`${process.env.API_URL}/auth/google?state=` + window.location.href, authRef.current, 800);
-	};
-	const redirectGithub = () => {
-		push(`${process.env.API_URL}/auth/github?state=` + window.location.href, authRef.current, 800);
-	};
 	return (
-		<div className="auth" ref={authRef}>
-			<form className="auth__form" onSubmit={onSubmit}>
-				<h1>{isLogin ? "Sign In" : "Sign Up"}</h1>
-				<span onClick={() => setIsLogin(!isLogin)}>{isLogin ? "Sign Up" : "Sign In"}</span>
+		<div className='auth'>
+			<form className='auth__form' onSubmit={handleSubmit(onSubmit)}>
+				<h1>{isLogin ? 'Sign In' : 'Sign Up'}</h1>
+				<span onClick={() => setIsLogin(!isLogin)}>{isLogin ? 'Sign Up' : 'Sign In'}</span>
 				{!isLogin && (
-					<input
-						value={values.name}
-						onChange={onChange}
-						className="auth__input"
-						name="name"
-						type="text"
-						placeholder="Name"
-						required
+					<Input
+						className='auth__input'
+						type='text'
+						placeholder='Name'
+						{...register('name', { required: 'Name required' })}
 					/>
 				)}
-				<input
-					value={values.email}
-					onChange={onChange}
-					className="auth__input"
-					name="email"
-					type="email"
-					placeholder="Email"
-					required
+				<Input
+					className='auth__input'
+					type='email'
+					placeholder='Email'
+					{...register('email', { required: 'Email required' })}
 				/>
-				<input
-					value={values.password}
-					onChange={onChange}
-					className="auth__input"
-					name="password"
-					type="password"
-					placeholder="Password"
-					required
+				<Input
+					className='auth__input'
+					type='password'
+					placeholder='Password'
+					{...register('password', { required: 'Password required' })}
 				/>
-				<button className="auth__button" type="submit">
+				<button className='auth__button' type='submit'>
 					Submit
 				</button>
-				<div className="auth__social">
-					<Image src={googleImg} alt="google" onClick={redirectGoogle} width={30} height={30} priority />
-					<Image src={githubImg} alt="github" onClick={redirectGithub} width={30} height={30} priority />
+				<div className='auth__social'>
+					<Image
+						src={googleImg}
+						alt='google'
+						onClick={() => redirectOauth('google')}
+						width={30}
+						height={30}
+						priority
+					/>
+					<Image
+						src={githubImg}
+						alt='github'
+						onClick={() => redirectOauth('github')}
+						width={30}
+						height={30}
+						priority
+					/>
 				</div>
 			</form>
 		</div>
-	);
-};
+	)
+}
 
-export default AuthContent;
+export default AuthContent

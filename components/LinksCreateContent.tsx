@@ -1,23 +1,33 @@
-import { useActions } from "@/actions/hooks/redux";
-import { useCreateLinkMutation } from "@/storage/reducers/links";
-import { useState } from "react";
+'use client'
+
+import { linkService } from '@/services'
+import { Input } from '@/styles/styles'
+import { LinkCreate } from '@/types/link.types'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useForm } from 'react-hook-form'
 
 const LinksCreateContent = () => {
-	const [href, setHref] = useState<string>("");
-	const [createLink, {}] = useCreateLinkMutation();
-	const { addNotification } = useActions();
-	const onSubmit = async (e: any) => {
-		e.preventDefault();
-		const { data } = (await createLink({ data: { href } })) as any;
-		if (data.error) addNotification({ text: data.error, type: "ERROR" });
-		else setHref("");
-	};
-	return (
-		<form className="links__create" onSubmit={onSubmit}>
-			<input type="text" onChange={(e) => setHref(e.target.value)} value={href} placeholder="Href" required />
-			<button type="submit">Create</button>
-		</form>
-	);
-};
+	const { handleSubmit, register, reset } = useForm<LinkCreate>({ mode: 'onChange' })
+	const queryClient = useQueryClient()
 
-export default LinksCreateContent;
+	const { mutate } = useMutation({
+		mutationKey: ['links'],
+		mutationFn: (data: LinkCreate) => linkService.create(data),
+		onSuccess: () => {
+			reset()
+		}
+	})
+
+	const onSubmit = async (data: LinkCreate) => {
+		mutate(data)
+	}
+
+	return (
+		<form className='links__create' onSubmit={handleSubmit(onSubmit)}>
+			<Input type='text' placeholder='Href' {...register('href', { required: true })} />
+			<button type='submit'>Create</button>
+		</form>
+	)
+}
+
+export default LinksCreateContent

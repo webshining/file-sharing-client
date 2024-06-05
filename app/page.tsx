@@ -1,27 +1,13 @@
-"use client";
-
-import { useAppSelector } from "@/actions/hooks/redux";
-import LinksContent from "@/components/LinksContent";
-import usePush from "@/components/Push";
-import UserBar from "@/components/UserBar";
-import { useEffect } from "react";
+import LinksContent from '@/components/LinksContent'
+import UserBar from '@/components/UserBar'
 
 const Home = () => {
-	const push = usePush();
-	const { user, isLoading } = useAppSelector((state) => state.user);
-	useEffect(() => {
-		if (!isLoading && !user) push("/auth");
-	}, [isLoading, user]);
-	return isLoading ? (
-		<></>
-	) : (
-		user && (
-			<>
-				<UserBar />
-				<LinksContent />
-			</>
-		)
-	);
-};
+	return (
+		<>
+			<UserBar />
+			<LinksContent />
+		</>
+	)
+}
 
-export default Home;
+export default Home

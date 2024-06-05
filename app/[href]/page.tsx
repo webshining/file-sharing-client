@@ -1,7 +1,17 @@
-import LinkContent from "@/components/LinkContent";
+import LinkContent from '@/components/LinkContent'
 
-const Link = async ({ params }: { params: { href: string } }) => {
-	return <LinkContent {...params} />;
-};
+type Props = {
+	params: { href: string }
+}
 
-export default Link;
+export function generateMetadata({ params }: Props) {
+	return {
+		title: params.href
+	}
+}
+
+const Link = async ({ params }: Props) => {
+	return <LinkContent {...params} />
+}
+
+export default Link
